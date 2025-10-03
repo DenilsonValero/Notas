@@ -1,0 +1,20 @@
+{
+  "name": "notas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.15.1",
+    "nodemon": "^3.1.10"
+  }
+}
