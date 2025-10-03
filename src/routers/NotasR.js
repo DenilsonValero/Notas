@@ -28,17 +28,18 @@ router.post("/", (req,res)=>{
 });
 
 router.put("/:idNota", (req,res)=>{
-    const {IdNota} =req.body
+    const {Contenido} = req.body;
+    const {idNota} = req.params;
     db.query("UPDATE nota SET Contenido = ? WHERE idNota = ?", 
-        [IdNota],
+        [Contenido,idNota],
         (err,result)=>{
             if (err) {
-                return res.status(500).json(err)
+                res.status(500).json(err)
             }
-            if (result.length === 0) {
-                return res.status(404).json({error:"Nota no encontrada"})
+            if (result.affectedRows === 0) {
+                res.status(404).json({error:"Nota no encontrada"})
             }
-            res.status(200).json({id: result.IdNota})
+            res.status(200).json({msg:"Nota actualizada"});
     });
 });
 
