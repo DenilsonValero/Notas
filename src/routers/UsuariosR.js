@@ -27,6 +27,22 @@ router.post("/", (req,res)=>{
         });
 });
 
+router.put("/:idUsarios", (req,res)=>{
+    const {Gmail,Contraseña,Nombre} = req.body
+    const {idUsarios} = req.params
+    db.query("UPDATE usarios SET Gmail = ?, Contraseña =?, Nombre = ? WHERE idUsarios = ?",
+        [Gmail,Contraseña,Nombre,idUsarios],(err,result)=>{
+            if (err) {
+                return res.status(500).json(err)
+            }
+            if (result.affectedRows === 0) {
+                return res.status(404).json({msg:"Usuario no enconrado"})
+            }
+            return res.status(200).json({msg:"Usuario actualizado"})
+        });
+});
+
+
 router.delete("/:idUsarios", (req,res)=>{
     const {idUsarios} = req.params
     db.query("DELETE FROM usarios WHERE idUsarios = ?",
