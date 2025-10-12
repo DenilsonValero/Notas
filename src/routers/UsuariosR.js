@@ -1,7 +1,26 @@
 import {Router} from "express";
 import db from "../Conection/DB.js";
+import { nodemailer } from "nodemailer";
 
 const router = Router()
+
+router.post("/enviacodigo", (req, res) => {
+    const { Gmail } = req.body;
+    if (!Gmail) {
+        return res.status(400).json({ error: "Falta el correo electrónico" });
+    }
+    const codigo = Math.floor(100000 + Math.random() * 900000); // Genera un código de 6 dígitos
+
+    // Configura el transporte de nodemailer
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user:" ", 
+            pass: " " 
+        }
+        
+    });
+});     
 
 router.get("/", (req,res)=>{
     db.query("SELECT * FROM usarios;", (err,result)=>{
