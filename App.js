@@ -1,9 +1,12 @@
-import express from "express"
-import Routerusuario from "./src/routers/UsuariosR.js"
-import routernota from "./src/routers/NotasR.js"
+const express = require('express');
+const Routerusuario = require('./src/routers/UsuariosR.js');
+const routernota = require('./src/routers/NotasR.js');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const App= express()
-const PORT= 8080
+const PORT= process.env.PORT||8080
 
 App.use(express.json());
 App.use("/usarios",Routerusuario);

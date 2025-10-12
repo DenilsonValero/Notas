@@ -1,5 +1,5 @@
-import {Router} from "express";
-import db from "../Conection/DB.js";
+const { Router } = require('express');
+const db = require('../Conection/DB.js');
 
 const router = Router()
 
@@ -58,4 +58,4 @@ router.delete("/:idNota", (req,res)=>{
         });
 });
 
-export default router;
+module.exports = router;

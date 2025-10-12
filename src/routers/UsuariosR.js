@@ -1,6 +1,9 @@
-import {Router} from "express";
-import db from "../Conection/DB.js";
-import { nodemailer } from "nodemailer";
+const { Router } = require('express');
+const db = require('../Conection/DB.js');
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const router = Router()
 
@@ -9,16 +12,25 @@ router.post("/enviacodigo", (req, res) => {
     if (!Gmail) {
         return res.status(400).json({ error: "Falta el correo electrónico" });
     }
-    const codigo = Math.floor(100000 + Math.random() * 900000); // Genera un código de 6 dígitos
+    const codigo = Math.floor(100000 + Math.random() * 900000); 
 
-    // Configura el transporte de nodemailer
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
+        port: 587,
+        secure: false,
         auth: {
-            user:" ", 
-            pass: " " 
-        }
+            user:process.env.EMAIL_USER, 
+            pass: process.env.EMAIL_PASS
+        },
         
+    });
+
+    transporter.verify((err,result) => {
+        if (err) {
+            console.log("Error al conectar con gmail",err);
+        } else {
+            console.log('Listo para enviar mensajes');
+        }
     });
 });     
 
@@ -78,4 +90,4 @@ router.delete("/:idUsarios", (req,res)=>{
 });
 
 
-export default router;
+module.exports = router;
