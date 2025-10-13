@@ -7,13 +7,14 @@ dotenv.config();
 
 const router = Router()
 
-router.post("/enviacodigo", (req, res) => {
+router.post("/enviacodigo", async (req, res) => {
     const { Gmail } = req.body;
     if (!Gmail) {
         return res.status(400).json({ error: "Falta el correo electrónico" });
     }
     const codigo = Math.floor(100000 + Math.random() * 900000); 
 
+try{
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         port: 587,
@@ -24,15 +25,31 @@ router.post("/enviacodigo", (req, res) => {
         },
         
     });
+    
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: Gmail,
+        subject: 'Código de verificación',
+        text: `Tu código de verificación es: ${codigo}`
+    };
 
-    transporter.verify((err,result) => {
-        if (err) {
-            console.log("Error al conectar con gmail",err);
-        } else {
-            console.log('Listo para enviar mensajes');
-        }
-    });
-});     
+   
+        await transporter.verify();
+            console.log('Listo para enviar correos');
+
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Correo enviado: " + info.response); 
+            return res.status(200).json({ msg: 'Correo enviado', "codigo": codigo });   
+
+    }
+    catch(err){
+        console.log("Error al enviar el correo", err);
+        return res.status(500).json({ err: 'Error al enviar el correo' 
+            
+     }); 
+    }
+});   
+  
 
 router.get("/", (req,res)=>{
     db.query("SELECT * FROM usarios;", (err,result)=>{
